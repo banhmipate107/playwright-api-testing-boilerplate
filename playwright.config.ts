@@ -30,7 +30,7 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on",
-    baseURL: "https://restful-booker.herokuapp.com/auth",
+    baseURL: "https://restful-booker.herokuapp.com/",
     video: "on",
   },
 

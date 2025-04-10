@@ -1,19 +1,29 @@
-import { APIRequestContext, APIResponse } from "@playwright/test";
+import { APIRequestContext } from "@playwright/test";
+import { BookingApiResult, BookingInformation } from "./booking.interface";
 
 export class BookingApi {
-  async createBooking(request: APIRequestContext, bookingBody: object) {
+  async createBooking(
+    request: APIRequestContext,
+    bookingBody: object
+  ): Promise<BookingApiResult<BookingInformation>> {
     const response = await request.post("/booking", {
       data: bookingBody,
     });
-    const responseBody = await response.json();
-
+    if (response.status() === 200) {
+      const responseBody = await response.json();
+      return {
+        responseBody: responseBody,
+        status: response.status(),
+      };
+    }
     return {
-      responseBody: responseBody,
       status: response.status(),
     };
   }
 
-  async getAllBookingIds(request: APIRequestContext) {
+  async getAllBookingIds(
+    request: APIRequestContext
+  ): Promise<BookingApiResult> {
     const response = await request.get("/booking");
     const responseBody = await response.json();
 
@@ -23,7 +33,10 @@ export class BookingApi {
     };
   }
 
-  async getBookingById(request: APIRequestContext, bookingId: string) {
+  async getBookingById(
+    request: APIRequestContext,
+    bookingId: string
+  ): Promise<BookingApiResult> {
     const response = await request.get(`/booking/${bookingId}`);
     const responseBody = await response.json();
 
@@ -38,7 +51,7 @@ export class BookingApi {
     authToken: string,
     bookingId: string,
     updatedBookingBody: object
-  ) {
+  ): Promise<BookingApiResult> {
     const response = await request.put(`/booking/${bookingId}`, {
       headers: {
         Cookie: `token=${authToken}`,
@@ -58,7 +71,7 @@ export class BookingApi {
     authToken: string,
     bookingId: string,
     partialBookingBody: object
-  ) {
+  ): Promise<BookingApiResult> {
     const response = await request.patch(`/booking/${bookingId}`, {
       headers: {
         Cookie: `token=${authToken}`,
@@ -77,15 +90,14 @@ export class BookingApi {
     request: APIRequestContext,
     authToken: string,
     bookingId: string
-  ) {
-    const response = await request.patch(`/booking/${bookingId}`, {
+  ): Promise<BookingApiResult> {
+    const response = await request.delete(`/booking/${bookingId}`, {
       headers: {
         Cookie: `token=${authToken}`,
       },
     });
-    const responseBody = await response.json();
+
     return {
-      responseBody: responseBody,
       status: response.status(),
     };
   }
