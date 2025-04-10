@@ -30,7 +30,9 @@ test.describe("get booking by id", () => {
     });
   });
 
-  test("filter booking by invalid id successfully", async ({ request }) => {
+  test("cannot filter booking by invalid id successfully", async ({
+    request,
+  }) => {
     await test.step("get booking by invalid id", async () => {
       getBookingResponse = await bookingApi.getBookingById(request, "abc");
     });
