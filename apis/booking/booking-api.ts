@@ -35,14 +35,19 @@ export class BookingApi {
 
   async getBookingById(
     request: APIRequestContext,
-    bookingId: string
+    bookingId: number | string
   ): Promise<BookingApiResult> {
     const response = await request.get(`/booking/${bookingId}`);
-    const responseBody = await response.json();
-
+    if (response.status() === 200) {
+      const responseBody = await response.json();
+      return {
+        responseBody: responseBody,
+        status: response.status(),
+      };
+    }
     return {
-      responseBody: responseBody,
       status: response.status(),
+      message: await response.text(),
     };
   }
 

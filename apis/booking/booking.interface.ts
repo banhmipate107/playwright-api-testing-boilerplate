@@ -1,6 +1,7 @@
 export interface BookingApiResult<T = any> {
   status: number;
   responseBody?: T;
+  message?: string;
 }
 
 export interface BookingInformation {

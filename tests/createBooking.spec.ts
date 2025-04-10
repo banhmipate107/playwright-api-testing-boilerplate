@@ -5,10 +5,9 @@ import { bookingData } from "../mock-data/booking-data.ts";
 const assert = new Assert();
 
 test.describe("create booking Api", () => {
+  const createBookingApi = new BookingApi();
+  let bookingResponse;
   test("create a booking successfully", async ({ request }) => {
-    const createBookingApi = new BookingApi();
-    let bookingResponse;
-
     await test.step("create a new booking", async () => {
       bookingResponse = await createBookingApi.createBooking(
         request,
@@ -32,8 +31,6 @@ test.describe("create booking Api", () => {
     request,
   }) => {
     const { additionalneeds, ...bookingMissingNeeds } = bookingData;
-    const createBookingApi = new BookingApi();
-    let bookingResponse;
 
     await test.step("create a new booking without additional needs", async () => {
       bookingResponse = await createBookingApi.createBooking(
@@ -56,8 +53,6 @@ test.describe("create booking Api", () => {
 
   test("cannot create a booking without first name", async ({ request }) => {
     const { firstname, ...bookingMissingName } = bookingData;
-    const createBookingApi = new BookingApi();
-    let bookingResponse;
 
     await test.step("create a new booking with request body missing first name", async () => {
       bookingResponse = await createBookingApi.createBooking(
@@ -73,8 +68,6 @@ test.describe("create booking Api", () => {
 
   test("cannot create a booking without booking dates", async ({ request }) => {
     const { bookingdates, ...bookingMissingDates } = bookingData;
-    const createBookingApi = new BookingApi();
-    let bookingResponse;
 
     await test.step("create a new booking with request body missing booking dates", async () => {
       bookingResponse = await createBookingApi.createBooking(
