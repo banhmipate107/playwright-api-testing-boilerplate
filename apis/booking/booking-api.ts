@@ -24,11 +24,33 @@ export class BookingApi {
   async getAllBookingIds(
     request: APIRequestContext
   ): Promise<BookingApiResult> {
-    const response = await request.get("/booking");
+    const response = await request.get(`/booking`);
     const responseBody = await response.json();
 
     return {
       responseBody: responseBody,
+      status: response.status(),
+    };
+  }
+
+  async getAllBookingIdsByName(
+    request: APIRequestContext,
+    firstName: string,
+    lastName: string
+  ): Promise<BookingApiResult> {
+    const response = await request.get(
+      `booking/?firstname=${firstName}&lastname=${lastName}`
+    );
+    const responseBody = await response.json();
+
+    if (response.status() === 200) {
+      const responseBody = await response.json();
+      return {
+        responseBody: responseBody,
+        status: response.status(),
+      };
+    }
+    return {
       status: response.status(),
     };
   }
