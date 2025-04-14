@@ -13,6 +13,6 @@ export class AuthAPI {
 
     const responseBody = await response.json();
 
-    return responseBody.token;
+    return { token: responseBody.token };
   }
 }
