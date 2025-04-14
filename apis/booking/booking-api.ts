@@ -94,7 +94,7 @@ export class BookingApi {
   async deleteBooking(
     request: APIRequestContext,
     authToken: string,
-    bookingId: string
+    bookingId: number | string
   ): Promise<BookingApiResult> {
     const response = await request.delete(`/booking/${bookingId}`, {
       headers: {
