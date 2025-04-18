@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { BookingApi } from "../apis/booking/booking-api.ts";
 import { AuthAPI } from "../apis/auth/auth-api.ts";
 import Assert from "../assert/assert.ts";
-import { bookingData } from "../mock-data/booking-data.ts";
+import { generateBookingData } from "../mock-data/booking-data.ts";
 const assert = new Assert();
 const bookingApi = new BookingApi();
 const authApi = new AuthAPI();
@@ -11,6 +11,7 @@ test.describe("delete booking Api", () => {
   let token: string;
   let bookingResponse;
   let bookingId: number;
+  const bookingData = generateBookingData();
 
   test.beforeEach("create token and prepare booking", async ({ request }) => {
     await test.step("create token", async () => {
@@ -54,7 +55,7 @@ test.describe("delete booking Api", () => {
       deleteBookingResponse = await bookingApi.deleteBooking(
         request,
         token,
-        222222
+        8888
       );
     });
 

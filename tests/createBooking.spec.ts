@@ -1,13 +1,16 @@
 import { test, expect } from "@playwright/test";
 import { BookingApi } from "../apis/booking/booking-api.ts";
 import Assert from "../assert/assert.ts";
-import { bookingData } from "../mock-data/booking-data.ts";
+import { generateBookingData } from "../mock-data/booking-data.ts";
+import { pick } from "lodash";
+import { pickRandomKeys } from "../utils/keyword.util.ts";
 const assert = new Assert();
 
 test.describe("create booking Api", () => {
   const createBookingApi = new BookingApi();
   let bookingResponse;
   test("create a booking successfully", async ({ request }) => {
+    const bookingData = generateBookingData();
     await test.step("create a new booking", async () => {
       bookingResponse = await createBookingApi.createBooking(
         request,
@@ -30,7 +33,7 @@ test.describe("create booking Api", () => {
   test("create a booking successfully without additional needs", async ({
     request,
   }) => {
-    const { additionalneeds, ...bookingMissingNeeds } = bookingData;
+    const { additionalneeds, ...bookingMissingNeeds } = generateBookingData();
 
     await test.step("create a new booking without additional needs", async () => {
       bookingResponse = await createBookingApi.createBooking(
@@ -51,13 +54,19 @@ test.describe("create booking Api", () => {
     });
   });
 
-  test("cannot create a booking without first name", async ({ request }) => {
-    const { firstname, ...bookingMissingName } = bookingData;
-
+  test("cannot create a booking without one required information", async ({
+    request,
+  }) => {
+    const bookingInfor = generateBookingData();
+    const bookingMissingRequired = pick(
+      bookingInfor,
+      pickRandomKeys(bookingInfor, 4, "additionalneeds")
+    );
+    console.log(bookingMissingRequired);
     await test.step("create a new booking with request body missing first name", async () => {
       bookingResponse = await createBookingApi.createBooking(
         request,
-        bookingMissingName
+        bookingMissingRequired
       );
     });
 
@@ -67,7 +76,7 @@ test.describe("create booking Api", () => {
   });
 
   test("cannot create a booking without booking dates", async ({ request }) => {
-    const { bookingdates, ...bookingMissingDates } = bookingData;
+    const { bookingdates, ...bookingMissingDates } = generateBookingData();
 
     await test.step("create a new booking with request body missing booking dates", async () => {
       bookingResponse = await createBookingApi.createBooking(
