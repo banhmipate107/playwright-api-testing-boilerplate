@@ -54,8 +54,8 @@ export class BookingApi {
   async updateBooking(
     request: APIRequestContext,
     authToken: string,
-    bookingId: string,
-    updatedBookingBody: object
+    bookingId?: number | string,
+    updatedBookingBody?: object
   ): Promise<BookingApiResult> {
     const response = await request.put(`/booking/${bookingId}`, {
       headers: {
@@ -63,18 +63,23 @@ export class BookingApi {
       },
       data: updatedBookingBody,
     });
-    const responseBody = await response.json();
-
+    if (response.status() === 200) {
+      const responseBody = await response.json();
+      return {
+        responseBody: responseBody,
+        status: response.status(),
+      };
+    }
     return {
-      responseBody: responseBody,
       status: response.status(),
+      message: await response.text(),
     };
   }
 
   async partialUpdateBooking(
     request: APIRequestContext,
     authToken: string,
-    bookingId: string,
+    bookingId: number | string,
     partialBookingBody: object
   ): Promise<BookingApiResult> {
     const response = await request.patch(`/booking/${bookingId}`, {
@@ -83,11 +88,16 @@ export class BookingApi {
       },
       data: partialBookingBody,
     });
-    const responseBody = await response.json();
-
+    if (response.status() === 200) {
+      const responseBody = await response.json();
+      return {
+        responseBody: responseBody,
+        status: response.status(),
+      };
+    }
     return {
-      responseBody: responseBody,
       status: response.status(),
+      message: await response.text(),
     };
   }
 

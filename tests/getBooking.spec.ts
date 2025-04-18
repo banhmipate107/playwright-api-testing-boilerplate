@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { BookingApi } from "../apis/booking/booking-api.ts";
 import Assert from "../assert/assert.ts";
-import { bookingData } from "../mock-data/booking-data.ts";
+import { generateBookingData } from "../mock-data/booking-data.ts";
 const assert = new Assert();
 const bookingApi = new BookingApi();
 
@@ -9,6 +9,7 @@ test.describe("get booking by id", () => {
   let bookingResponse;
   let bookingId: number;
   let getBookingResponse;
+  const bookingData = generateBookingData();
   test.beforeAll("create a booking", async ({ request }) => {
     await test.step("create a new booking", async () => {
       bookingResponse = await bookingApi.createBooking(request, bookingData);
@@ -55,7 +56,7 @@ test.describe("get all booking ids", () => {
     await test.step("create a new booking", async () => {
       getAllBookingResponse = await bookingApi.createBooking(
         request,
-        bookingData
+        generateBookingData()
       );
       bookingId = getAllBookingResponse.responseBody.bookingid;
 
