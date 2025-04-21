@@ -24,7 +24,7 @@ export class BookingApi {
   async getAllBookingIds(
     request: APIRequestContext
   ): Promise<BookingApiResult> {
-    const response = await request.get("/booking");
+    const response = await request.get(`/booking`);
     const responseBody = await response.json();
 
     return {
@@ -33,11 +33,18 @@ export class BookingApi {
     };
   }
 
-  async getBookingById(
+  async getAllBookingIdsByName(
     request: APIRequestContext,
-    bookingId: number | string
+    firstName?: string,
+    lastName?: string
   ): Promise<BookingApiResult> {
-    const response = await request.get(`/booking/${bookingId}`);
+    // Build the query parameters dynamically
+    const params = new URLSearchParams();
+    if (firstName) params.append("firstname", firstName);
+    if (lastName) params.append("lastname", lastName);
+
+    const response = await request.get(`booking?${params.toString()}`);
+
     if (response.status() === 200) {
       const responseBody = await response.json();
       return {
@@ -47,7 +54,25 @@ export class BookingApi {
     }
     return {
       status: response.status(),
-      message: await response.text(),
+    };
+  }
+
+  async getBookingById(
+    request: APIRequestContext,
+    bookingId: number | string
+  ): Promise<BookingApiResult> {
+    const response = await request.get(`/booking/${bookingId}`);
+    const responseMessage = await response.text();
+    if (response.status() === 200) {
+      const responseBody = await response.json();
+      return {
+        responseBody: responseBody,
+        status: response.status(),
+      };
+    }
+    return {
+      status: response.status(),
+      message: responseMessage,
     };
   }
 
@@ -63,6 +88,7 @@ export class BookingApi {
       },
       data: updatedBookingBody,
     });
+    const responseMessage = await response.text();
     if (response.status() === 200) {
       const responseBody = await response.json();
       return {
@@ -72,7 +98,7 @@ export class BookingApi {
     }
     return {
       status: response.status(),
-      message: await response.text(),
+      message: responseMessage,
     };
   }
 
@@ -88,6 +114,7 @@ export class BookingApi {
       },
       data: partialBookingBody,
     });
+    const responseMessage = await response.text();
     if (response.status() === 200) {
       const responseBody = await response.json();
       return {
@@ -97,7 +124,7 @@ export class BookingApi {
     }
     return {
       status: response.status(),
-      message: await response.text(),
+      message: responseMessage,
     };
   }
 

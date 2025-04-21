@@ -157,7 +157,6 @@ test.describe("partially update a booking", async () => {
       bookingInfo,
       pickRandomKeys(bookingInfo, faker.number.int({ min: 1, max: 4 }))
     );
-    console.log(partialPayload);
     await test.step("call update booking api with partial booking payload", async () => {
       updateBookingResponse = await bookingApi.partialUpdateBooking(
         request,

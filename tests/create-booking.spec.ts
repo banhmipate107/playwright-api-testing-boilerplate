@@ -62,7 +62,6 @@ test.describe("create booking Api", () => {
       bookingInfor,
       pickRandomKeys(bookingInfor, 4, "additionalneeds")
     );
-    console.log(bookingMissingRequired);
     await test.step("create a new booking with request body missing first name", async () => {
       bookingResponse = await createBookingApi.createBooking(
         request,
