@@ -107,4 +107,43 @@ test.describe("get all booking ids", () => {
       assert.assertObjectEquals(foundBooking, bookingIdElement);
     });
   });
+
+  test("get all booking ids with only firstname param", async ({ request }) => {
+    await test.step("get booking ids with first name param", async () => {
+      getAllBookingResponse = await bookingApi.getAllBookingIdsByName(
+        request,
+        bookingFirstName
+      );
+    });
+
+    await test.step("verify the status code is 200", async () => {
+      assert.assertStatusCode(getAllBookingResponse.status, 200);
+    });
+
+    await test.step("verify the created booking id contains in the booking ids list", async () => {
+      const foundBooking = getAllBookingResponse.responseBody.find(
+        ({ bookingid }) => bookingid === bookingId
+      );
+      assert.assertObjectEquals(foundBooking, bookingIdElement);
+    });
+  });
+
+  test("cannot get all booking ids with only lastname param", async ({
+    request,
+  }) => {
+    await test.step("get booking ids with last name param", async () => {
+      getAllBookingResponse = await bookingApi.getAllBookingIdsByName(
+        request,
+        bookingLastName
+      );
+    });
+
+    await test.step("verify the status code is 200", async () => {
+      assert.assertStatusCode(getAllBookingResponse.status, 200);
+    });
+
+    await test.step("verify the created booking id contains in the booking ids list", async () => {
+      expect(getAllBookingResponse.responseBody).toHaveLength(0); // ✅ Recommended in Jest
+    });
+  });
 });

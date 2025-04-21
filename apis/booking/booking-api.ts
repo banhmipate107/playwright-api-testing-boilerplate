@@ -35,13 +35,15 @@ export class BookingApi {
 
   async getAllBookingIdsByName(
     request: APIRequestContext,
-    firstName: string,
-    lastName: string
+    firstName?: string,
+    lastName?: string
   ): Promise<BookingApiResult> {
-    const response = await request.get(
-      `booking/?firstname=${firstName}&lastname=${lastName}`
-    );
-    const responseBody = await response.json();
+    // Build the query parameters dynamically
+    const params = new URLSearchParams();
+    if (firstName) params.append("firstname", firstName);
+    if (lastName) params.append("lastname", lastName);
+
+    const response = await request.get(`booking?${params.toString()}`);
 
     if (response.status() === 200) {
       const responseBody = await response.json();
@@ -60,6 +62,7 @@ export class BookingApi {
     bookingId: number | string
   ): Promise<BookingApiResult> {
     const response = await request.get(`/booking/${bookingId}`);
+    const responseMessage = await response.text();
     if (response.status() === 200) {
       const responseBody = await response.json();
       return {
@@ -69,7 +72,7 @@ export class BookingApi {
     }
     return {
       status: response.status(),
-      message: await response.text(),
+      message: responseMessage,
     };
   }
 
@@ -85,6 +88,7 @@ export class BookingApi {
       },
       data: updatedBookingBody,
     });
+    const responseMessage = await response.text();
     if (response.status() === 200) {
       const responseBody = await response.json();
       return {
@@ -94,7 +98,7 @@ export class BookingApi {
     }
     return {
       status: response.status(),
-      message: await response.text(),
+      message: responseMessage,
     };
   }
 
@@ -110,6 +114,7 @@ export class BookingApi {
       },
       data: partialBookingBody,
     });
+    const responseMessage = await response.text();
     if (response.status() === 200) {
       const responseBody = await response.json();
       return {
@@ -119,7 +124,7 @@ export class BookingApi {
     }
     return {
       status: response.status(),
-      message: await response.text(),
+      message: responseMessage,
     };
   }
 
