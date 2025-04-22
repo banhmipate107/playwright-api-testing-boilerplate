@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "create-booking": "npx playwright test tests/create-booking.spec.ts --project=chromium",
+    "delete-booking": "npx playwright test tests/delete-booking.spec.ts --project=chromium",
+    "get-booking": "npx playwright test tests/get-booking.spec.ts --project=chromium",
+    "update-booking": "npx playwright test tests/update-booking.spec.ts --project=chromium",
+    "allure-report": "allure generate --clean ./allure-results -o ./allure-report && allure open ./allure-report/",
+    "reinstall": "npx playwright install"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

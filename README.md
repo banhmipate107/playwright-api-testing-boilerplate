@@ -1,4 +1,5 @@
 ## 🌟 Sample boilerplate structure using Playwirght API tests with CRUD test cases
+
 I use [Restful-Booker](https://restful-booker.herokuapp.com/apidoc/index.html) for this project. Big shoutout to [Mark Winteringham](https://github.com/mwinteringham) for making this awesome resource available to the public 👏🏼💯🎇.
 
 ### **🗂️ Project structure**
@@ -40,21 +41,21 @@ project
 
     npm install
 
-#### **To run tests only on Firefox**
+#### **To run tests regarding Create Booking API**
 
-    npm run firefox
+    npm run create-booking
 
-#### **To run tests only on Chromium**
+#### **To run tests regarding Delete Booking API**
 
-    npm run chromium
+    npm run delete-booking
 
-#### **To run tests regarding forms**
+#### **To run tests regarding Get Booking API**
 
-    npm run input-form
+    npm run get-booking
 
-#### **To run tests regarding files**
+#### **To run tests regarding Update Booking API**
 
-    npm run interact-file
+    npm run update-booking
 
 #### **To open Playwright's report**
 
